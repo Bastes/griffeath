@@ -1,4 +1,4 @@
-require 'map.rb'
+require 'lib/map'
 
 =begin rdoc
 =Infinite 2D map specialized for handling a finite range of states in its cells.
