@@ -1,0 +1,11 @@
+=Griffeath's cellulare automaton implementation
+
+Author:: Michel Belleville <mailto:michel.belleville@gmail.com>
+
+Rules :
+* cells may cycle evolve through (n) states (4 by default).
+* first state (0) is a "null" state by convention.
+* a cell evolve to the next state when at least 3 of its neighbors are already
+  on said next state.
+* a cell that doesn't evolve remains on the same state.
+
