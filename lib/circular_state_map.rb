@@ -1,4 +1,4 @@
-require 'state_map.rb'
+require 'lib/state_map'
 
 =begin rdoc
 =State map specialized for handling circular state lists.
