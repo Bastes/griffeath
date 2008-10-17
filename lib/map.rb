@@ -24,14 +24,24 @@ class Map
 	content
   end
   
-  # executes given block for each cell around given position
+  # executes given block for each cell of a portion of the map
+  # x1, y1, x2, y2:: coordinates of the zone to extract
+  def zone(x1, y1, x2, y2, &block)
+    xmin, xmax = [x1, x2].sort
+    ymin, ymax = [y1, y2].sort
+    (xmin..xmax).each do |x|
+      (ymin..ymax).each do |y|
+		yield self[x, y], x, y
+	  end
+	end
+  end
+
+  # executes given block for each neighbor cell of given position
   # x, y:: coordinates of the cell (integer)
   # including:: if true, given cell is included in the iteration (boolean) 
   def around(x, y, including = false, &block)
-    ((x - 1)..(x + 1)).each do |cx|
-      ((y - 1)..(y + 1)).each do |cy|
-        yield position(cx, cy) if including or  cx != x or cy != y
-      end
+    zone(x - 1, y - 1, x + 1, y + 1) do |content, x, y|
+	  yield content, x, y if including or  cx != x or cy != y
     end
   end
     
