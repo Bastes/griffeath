@@ -26,8 +26,8 @@ class MapTest < Test::Unit::TestCase
   def test_zone
     map = filled_map
     sequence = []
-    (-6..6).each do |x|
-      (-6..6).each do |y| 
+    (-6..6).each do |y|
+      (-6..6).each do |x| 
         sequence << [x, y, map[x, y]]
       end
     end
@@ -38,7 +38,33 @@ class MapTest < Test::Unit::TestCase
       assert_equal v, sv
     end
   end
-
+  
+  # iterating around a specific spot
+  def test_around
+    map = filled_map
+    sequence = []
+    (-1..1).each do |y|
+      (-1..1).each do |x| 
+        sequence << [x, y, map[x, y]]
+      end
+    end
+    [true, false].each do |including|
+      seq = sequence.clone
+	  map.around(0, 0, including) do |v, x, y|
+        sx, sy, sv = seq.shift
+        assert_equal x, sx
+        assert_equal y, sy
+        assert_equal v, sv
+      end
+      sequence.delete_at 4 if including
+    end
+    map.around(0, 0) do |v, x, y|
+      sx, sy, sv = sequence.shift
+      assert_equal x, sx
+      assert_equal y, sy
+      assert_equal v, sv
+    end
+  end
   private
   
   # creates a set of points

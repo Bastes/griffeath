@@ -2,7 +2,7 @@ require 'lib/circular_state_map'
 
 class Griffeath < CircularStateMap
   def initialize(states = 4)
-    super (0..(states - 1))
+    super(0..(states - 1))
   end
   
   def evolve!
