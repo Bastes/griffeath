@@ -29,8 +29,8 @@ class Map
   def zone(x1, y1, x2, y2, &block)
     xmin, xmax = [x1, x2].sort
     ymin, ymax = [y1, y2].sort
-    (xmin..xmax).each do |x|
-      (ymin..ymax).each do |y|
+    (ymin..ymax).each do |y|
+      (xmin..xmax).each do |x|
 		yield self[x, y], x, y
 	  end
 	end
@@ -40,8 +40,8 @@ class Map
   # x, y:: coordinates of the cell (integer)
   # including:: if true, given cell is included in the iteration (boolean) 
   def around(x, y, including = false, &block)
-    zone(x - 1, y - 1, x + 1, y + 1) do |content, x, y|
-	  yield content, x, y if including or  cx != x or cy != y
+    zone(x - 1, y - 1, x + 1, y + 1) do |content, cx, cy|
+	  yield content, cx, cy if including or  cx != x or cy != y
     end
   end
     
