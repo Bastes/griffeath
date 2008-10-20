@@ -1,5 +1,11 @@
 =begin rdoc
 =Simple "infinite" planar map.
+
+* a map has no boundaries
+* x stands for column, y for row
+* iterations goes rows by rows, then column by column
+* empty cells holds nil
+
 =end
 class Map
 
@@ -18,10 +24,10 @@ class Map
   # x, y:: coordinates of the cell (integer) 
   # content:: content of the cell
   def []=(x, y, content)
-	pos = position(x, y)
+    pos = position(x, y)
     @cells[pos]= content if content
-	@cells.delete(pos) unless content
-	content
+    @cells.delete(pos) unless content
+    content
   end
   
   # executes given block for each cell of a portion of the map
@@ -31,9 +37,9 @@ class Map
     ymin, ymax = [y1, y2].sort
     (ymin..ymax).each do |y|
       (xmin..xmax).each do |x|
-		yield self[x, y], x, y
-	  end
-	end
+        yield self[x, y], x, y
+      end
+    end
   end
 
   # executes given block for each neighbor cell of given position
@@ -41,7 +47,7 @@ class Map
   # including:: if true, given cell is included in the iteration (boolean) 
   def around(x, y, including = false, &block)
     zone(x - 1, y - 1, x + 1, y + 1) do |content, cx, cy|
-	  yield content, cx, cy if including or  cx != x or cy != y
+      yield content, cx, cy if including or  cx != x or cy != y
     end
   end
     
