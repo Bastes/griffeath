@@ -5,6 +5,7 @@ require 'lib/map'
 =end
 class StateMap < Map
   
+  # creating a new state map
   # states:: list of states a cell can take (the first will be the empty state)
   def initialize(states)
 	@states = states.to_a.uniq

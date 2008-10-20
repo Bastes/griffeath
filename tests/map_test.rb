@@ -1,7 +1,10 @@
 require 'lib/map'
 require 'test/unit'
+require 'tests/map_test_utilities'
 
 class MapTest < Test::Unit::TestCase
+  include MapTestUtilities
+
   # an empty mao should only contain nil values
   def test_empty_map
     map = Map.new
@@ -13,13 +16,13 @@ class MapTest < Test::Unit::TestCase
   # putting something on a map should return that very thing
   def test_put_and_return_something
     map = Map.new
-    points { |x, y, v| assert_equal(map[x, y] = v, v) }
+    points { |x, y| assert_equal(map[x, y] = anything(x, y), anything(x, y)) }
   end
 
   # something put on the map should stay wherever it's put
   def test_keep_things_put
     map = filled_map
-    points { |x, y, v| assert_equal(map[x, y], v) }
+    points { |x, y| assert_equal(map[x, y], anything(x, y)) }
   end
   
   # iterating through a specific zone
@@ -64,27 +67,5 @@ class MapTest < Test::Unit::TestCase
       assert_equal y, sy
       assert_equal v, sv
     end
-  end
-  private
-  
-  # creates a set of points
-  def square
-    @square ||= (-5..5).to_a.collect { |i| (-5..5).to_a }
-  end
-
-  # circles through a square set of points
-  def points(&block)
-    square.each_index do |x|
-      square[x].each do |y|
-        yield x, y, "#{x} - #{y}"
-      end
-    end
-  end
-  
-  # fills a new map with a square set of test values
-  def filled_map
-    map = Map.new
-    points { |x, y, v| map[x, y] = v }
-    map
   end
 end
