@@ -15,7 +15,7 @@ end
 desc "(Re-)Builds the documentation"
 Rake::RDocTask.new do |rd|
   rd.main = "README"
-  rd.rdoc_files.include("README", "lib/**/*.rb")
+  rd.rdoc_files.include("README", "LICENSE", "lib/**/*.rb")
   rd.rdoc_dir = 'doc'
 end
 
