@@ -9,9 +9,7 @@ module Griffeath
     # an empty mao should only contain nil values
     def test_empty_map
       map = Map.new
-      points do |x, y|
-        assert_nil map[x, y]
-      end
+      points { |x, y| assert_nil map[x, y] }
     end
     
     # putting something on a map should return that very thing
@@ -54,7 +52,7 @@ module Griffeath
       end
       [true, false].each do |including|
         seq = sequence.clone
-  	  map.around(0, 0, including) do |v, x, y|
+        map.around(0, 0, including) do |v, x, y|
           sx, sy, sv = seq.shift
           assert_equal x, sx
           assert_equal y, sy
