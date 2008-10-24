@@ -1,6 +1,6 @@
-require 'lib/map'
 require 'test/unit'
 require 'tests/map_test_utilities'
+require 'lib/map'
 
 module Griffeath
   class MapTest < Test::Unit::TestCase
