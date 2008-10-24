@@ -6,5 +6,6 @@ module Griffeath
   class CircularStateMapTest < Test::Unit::TestCase
     include MapTestUtilities
     
+
   end
 end
