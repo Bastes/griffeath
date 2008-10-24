@@ -32,14 +32,14 @@ module Griffeath # :nodoc:
     
     # returns the next state of given position's cell
     # x, y:: coordinates of the cell (integer) 
-    def evolve_cell(x, y)
-      next_state self[x, y]
+    def evolve(x, y)
+      @states.next self[x, y]
     end
     
     # evolves a cell to the next state and returns its new state
     # x, y:: coordinates of the cell (integer) 
-    def evolve_cell!(x, y)
-      self[x, y] = sevolve_cell(x, y)
+    def evolve!(x, y)
+      self[x, y] = evolve(x, y)
     end
   end
 end

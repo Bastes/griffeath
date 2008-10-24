@@ -13,7 +13,7 @@ module Griffeath
       assert_raise(NoMethodError) { map.states = :truc }
     end
   
-    # an empty map should only contain the empty value (first in the value array)
+    # an empty map should only contain the default state (first in the state array)
     def test_empty_state
       map = CircularStateMap.new [:empty, :full]
       points do |x, y|
@@ -21,18 +21,30 @@ module Griffeath
       end
     end
     
-    # an element out of state should be kept as the nil state
-    def out_of_states_elements
+    # an element out of state should be kept at the default state
+    def test_out_of_states_elements
       map = CircularStateMap.new [:empty, :full]
-      assert_equal     map.state(:empty),          :empty
-      assert_not_equal map.state(:something_else), :something_else
-      assert_equal     map.state(:something_else), :empty
-      assert_equal     map.state(:full),           :full
       points do |x, y|
-        someotherthing = map[x, y] = something = anything(x, y)
+        map[x, y] = something = anything(x, y)
+        someotherthing = map[x, y]
         [someotherthing, map[x, y]].each do |state|
           assert_not_equal state, something 
           assert_equal     state, :empty
+        end
+      end
+    end
+
+    # a cell evolving should go to next state in the cycle
+    def test_evolving
+      map = CircularStateMap.new [0, 1, 2]
+      states = [1, 2, 0]
+      points do |x, y|
+        states .each do |state|
+          previous_state = map[x, y]
+          assert_equal state, map.evolve(x, y)
+          assert_equal previous_state, map[x, y]
+          assert_equal state, map.evolve!(x, y)
+          assert_equal state, map[x, y]
         end
       end
     end
