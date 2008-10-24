@@ -1,15 +1,33 @@
-require 'lib/state_map'
+require 'lib/map'
+require 'lib/circular_state_array'
 
 =begin rdoc
-=State map specialized for handling circular state lists.
+=State map specialized for handling a circular list of state.
 =end
 module Griffeath # :nodoc:
-  class CircularStateMap < StateMap
-    # returns the next state of given state following the states sequence
-    # (a value not present in the state list is equaled to the nil state)
-    # value:: previous state
-    def next_state(value)
-      @states[(@states.index(state(value)) + 1) % @states.length]
+  class CircularStateMap < Map
+    attr_reader :states
+
+    # creating a new state map
+    # states:: list of states a cell can take (first state is default state)
+    def initialize(states)
+      super()
+      @states = CircularStateArray.new(states)
+      @states.freeze
+    end
+    
+    # see Map::[]
+    # see CircularStateArray::state
+    def [](x, y)
+      @states.state super(x, y)
+    end
+   
+    # see Map::[]=
+    # see CircularStateArray::state
+    def []=(x, y, content)
+      content = @states.state(content) 
+      super(x, y, content == @states.default ? nil : content)
+      content
     end
     
     # returns the next state of given position's cell

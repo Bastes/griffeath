@@ -9,7 +9,7 @@ module Griffeath # :nodoc:
     # values:: list of states
     def initialize(*values)
       values = values[0] if values.respond_to?(:length) and values.length == 1
-      (values = values.to_a).uniq!
+      values = Array(values).uniq
       raise ArgumentError.new('Requires at least 2 different states.') unless values.length > 1
       super(values)
     end
