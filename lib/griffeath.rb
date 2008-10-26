@@ -2,7 +2,7 @@ require 'lib/circular_state_map'
 
 module Griffeath # :nodoc:
   class Griffeath < CircularStateMap
-    def evolve!
+    def evolution!
       result = Hash.new
       @cells.each do |pos, value|
         around pos, true do |cpos|
