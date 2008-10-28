@@ -9,9 +9,21 @@
 =end
 module Griffeath # :nodoc:
   class Map
-  
-    def initialize # :nodoc:
+    
+    # values:: values to pre-set in the array
+    def initialize(values = nil)
       @cells = Hash.new
+      if values
+        begin
+          values.each_index do |y|
+            values[y].each_index do |x|
+              self[x, y] = values[y][x]
+            end
+          end
+        rescue
+          raise ArgumentError.new("Given values are not in a proper array.")
+        end
+      end
     end
     
     # returns a cell's content
@@ -33,7 +45,7 @@ module Griffeath # :nodoc:
     
     # executes given block for each cell of a portion of the map
     # x1, y1, x2, y2:: coordinates of the zone to extract
-    def zone(x1, y1, x2, y2, &block)
+    def zone(x1, y1, x2, y2, &block) # :yields: content, x, y
       xmin, xmax = [x1, x2].sort
       ymin, ymax = [y1, y2].sort
       (ymin..ymax).each do |y|
@@ -46,7 +58,7 @@ module Griffeath # :nodoc:
     # executes given block for each neighbor cell of given position
     # x, y:: coordinates of the cell (integer)
     # including:: if true, given cell is included in the iteration (boolean) 
-    def around(x, y, including = false, &block)
+    def around(x, y, including = false, &block) # :yields: content, x, y
       zone(x - 1, y - 1, x + 1, y + 1) do |content, cx, cy|
         yield content, cx, cy if including or  cx != x or cy != y
       end

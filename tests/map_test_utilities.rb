@@ -1,14 +1,18 @@
 module Griffeath
   module MapTestUtilities
     # creates a set of points
-    def square
-      @square ||= (-5..5).to_a.collect { |i| (-5..5).to_a }
+    def square(range = nil)
+      range ||= (-5..5)
+      @square ||= Hash.new
+      @square[range] ||= range.to_a.collect { |i| range.to_a }
+      @square[range]
     end
   
     # circles through a square set of points
-    def points(&block)
-      square.each_index do |x|
-        square[x].each do |y|
+    def points(range = nil, &block)
+      s = square(range)
+      s.each_index do |x|
+        s[x].each do |y|
           yield x, y 
         end
       end
