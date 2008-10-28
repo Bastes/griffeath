@@ -6,12 +6,19 @@ module Griffeath
   class MapTest < Test::Unit::TestCase
     include MapTestUtilities
   
-    # an empty mao should only contain nil values
+    # an empty map should only contain nil values
     def test_empty_map
       map = Map.new
       points { |x, y| assert_nil map[x, y] }
     end
     
+    # creating a map from an array
+    def test_importing_an_array
+      array = Array.new(10) { |y| Array.new(10) { |x| anything(x, y) } }
+      map = Map.new(array)
+      points(0..9) { |x, y| assert_equal array[y][x], map[x, y] }
+    end
+
     # putting something on a map should return that very thing
     def test_put_and_return_something
       map = Map.new
