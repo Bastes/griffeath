@@ -2,6 +2,10 @@ require 'lib/circular_state_map'
 
 module Griffeath # :nodoc:
   class Griffeath < CircularStateMap
+    def initialize(states = [0, 1, 2, 3], values = [])
+      super
+    end
+
     def evolution!
       result = Hash.new
       @cells.each do |pos, value|

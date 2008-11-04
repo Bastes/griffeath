@@ -9,7 +9,6 @@
 =end
 module Griffeath # :nodoc:
   class Map
-    
     # values:: values to pre-set in the array
     def initialize(values = nil)
       @cells = Hash.new

@@ -6,13 +6,21 @@ module Griffeath
   class CircularStateArrayTest < Test::Unit::TestCase
     # a new map should have 4 states by default
     def test_default_states
-      flunk 'Write a test for default states.'
+      assert_equal Griffeath.new.states, [ 0, 1, 2, 3 ]
     end
     
     # the map evolving should follow griffeath's rules
     def test_evolution
       tests = YAML::load(File.open('tests/fixtures/griffeath_fixtures.yaml'))
-      flunk "Write a test for evolution."
+      tests.each_pair do |rule_name, rule|
+        states = (0..(rule['states'] - 1)).to_a
+        rule['situations'].each_pair do |situation_name, situation|
+          situation.each_pair do |exemple_name, exemple|
+            map = Griffeath.new(states, exemple[0])
+          end
+        end
+      end
+      flunk "Finish writing this test."
     end
   end
 end
