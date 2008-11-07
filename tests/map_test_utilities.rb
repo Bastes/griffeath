@@ -23,6 +23,11 @@ module Griffeath
       points(range) { |x, y| map[x, y] = anything(x, y) }
       map
     end
+
+    # fills an array with test values
+    def filled_array
+      @array ||= Array.new(10) { |y| Array.new(10) { |x| anything(x, y) } }
+    end
     
     # a basic value based on x, y coordinates to fill a map and perform checks
     def anything(x, y)
