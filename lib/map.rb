@@ -42,6 +42,14 @@ module Griffeath # :nodoc:
       content
     end
     
+    # executes given block for each non-empty cell of the map
+    def each(&block) # :yields: content, x, y
+      @cells.each do |key, value|
+        x, y = coordinates(key)
+        yield value, x, y
+      end
+    end
+
     # executes given block for each cell of a portion of the map
     # x1, y1, x2, y2:: coordinates of the zone to extract
     def zone(x1, y1, x2, y2, &block) # :yields: content, x, y
@@ -53,7 +61,7 @@ module Griffeath # :nodoc:
         end
       end
     end
-  
+    
     # executes given block for each neighbor cell of given position
     # x, y:: coordinates of the cell (integer)
     # including:: if true, given cell is included in the iteration (boolean) 
@@ -62,7 +70,32 @@ module Griffeath # :nodoc:
         yield content, cx, cy if including or  cx != x or cy != y
       end
     end
-      
+    
+    # checks wether given value contains exactly the same pattern as this map
+    # value can be :
+    # - an array of arrays [row][column]
+    # - a hash of hashes (integer keys) [row][column]
+    # - another map
+    # the position and orientation of the pattern are relevant
+    def ==(value)
+      return true if self.eql? value
+      begin
+        return self.eql? Map.new(value)
+      rescue
+        return false
+      end
+    end
+    
+    # checks wether given other map is equivalent to this one
+    def eql?(value)
+      return false unless self.class == value.class
+      tag_cells = @cells.clone
+      value.each do |content, x, y|
+        return false unless tag_cells.delete(position(x, y))
+      end
+      return tag_cells.empty?
+    end
+
     private
     
     def position(x, y) # :nodoc:

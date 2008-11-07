@@ -31,6 +31,11 @@ module Griffeath
       points { |x, y| assert_equal(map[x, y], anything(x, y)) }
     end
     
+    # iterating through all non-empty cells
+    def test_each
+      flunk "Write this test."
+    end
+
     # iterating through a specific zone
     def test_zone
       map = filled_map
@@ -73,6 +78,21 @@ module Griffeath
         assert_equal y, sy
         assert_equal v, sv
       end
+    end
+    
+    # a map should be comparable to
+    # - another map
+    # - an array of arrays
+    # - a hash of hashes (with integer coordinates)
+    # as long as the filled area of the map corresponds to the comparison pattern
+    # both should be considered equal, disregarding the position of the pattern
+    def test_comparison
+      map1 = filled_map
+      map2 = filled_map
+      assert_equal map1, map2
+      map2[0, 0] = nil
+      assert_not_equal map1, map2
+      flunk 'Needs more cases.'
     end
   end
 end
