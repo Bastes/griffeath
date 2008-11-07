@@ -9,18 +9,30 @@
 =end
 module Griffeath # :nodoc:
   class Map
-    # values:: values to pre-set in the array
+    # values:: pre-set in an array of arrays, hash of hash, or another map
     def initialize(values = nil)
       @cells = Hash.new
       if values
         begin
-          values.each_index do |y|
-            values[y].each_index do |x|
-              self[x, y] = values[y][x]
+          if values.class == self.class
+            values.each { |content, x, y| self[x, y] = content }
+          elsif values.respond_to? :each_index
+            values.each_index do |y|
+              values[y].each_index do |x|
+                self[x, y] = values[y][x]
+              end
             end
+          elsif values.respond_to? :each_pair
+            values.each_pair do |y, row|
+              row.each_pair do |x, content|
+                self[x, y] = values[y][x]
+              end
+            end
+          else
+            raise ArgumentError.new
           end
         rescue
-          raise ArgumentError.new("Given values are not in a proper array.")
+          raise ArgumentError.new("Given values are not in a proper array or hash.")
         end
       end
     end
@@ -77,6 +89,7 @@ module Griffeath # :nodoc:
     # - a hash of hashes (integer keys) [row][column]
     # - another map
     # the position and orientation of the pattern are relevant
+    # value:: value compared to this map
     def ==(value)
       return true if self.eql? value
       begin
@@ -87,6 +100,7 @@ module Griffeath # :nodoc:
     end
     
     # checks wether given other map is equivalent to this one
+    # value:: value compared to this map
     def eql?(value)
       return false unless self.class == value.class
       tag_cells = @cells.clone

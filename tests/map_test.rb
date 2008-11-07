@@ -14,7 +14,7 @@ module Griffeath
     
     # creating a map from an array
     def test_importing_an_array
-      array = Array.new(10) { |y| Array.new(10) { |x| anything(x, y) } }
+      array = filled_array
       map = Map.new(array)
       points(0..9) { |x, y| assert_equal array[y][x], map[x, y] }
     end
@@ -33,7 +33,8 @@ module Griffeath
     
     # iterating through all non-empty cells
     def test_each
-      flunk "Write this test."
+      map = filled_map
+      flunk 'Needs more cases.'
     end
 
     # iterating through a specific zone
@@ -88,11 +89,47 @@ module Griffeath
     # both should be considered equal, disregarding the position of the pattern
     def test_comparison
       map1 = filled_map
+      
+      # these clearly can't be equal
+      assert_not_equal map1, nil
+      assert_not_equal map1, 1
+      assert_not_equal map1, "blah blah"
+
+      # both maps are equal
       map2 = filled_map
       assert_equal map1, map2
+      
+      # unless they differ even in the slightest way
       map2[0, 0] = nil
       assert_not_equal map1, map2
-      flunk 'Needs more cases.'
+      
+      # comparing with an equivalent array
+      map1 = Map.new(array = filled_array)
+      assert_equal(map1, array)
+
+      # comparing with different arrays, some ill-formatted
+      assert_not_equal(map1, [])
+      assert_not_equal(map1, [1])
+      assert_not_equal(map1, [1, 2])
+      assert_not_equal(map1, [[1], [2]])
+
+      # comparing with an equivalent hash
+      hash = {}
+      points do |x, y|
+        hash[y] ||= {}
+        hash[y][x] = anything(x, y)
+      end
+      map1 = Map.new(hash)
+      assert_equal(map1, hash)
+
+      # comparing with different hashes, some ill-formatted
+      assert_not_equal(map1, {})
+      assert_not_equal(map1, {1 => 1})
+      assert_not_equal(map1, {:a => 1})
+      assert_not_equal(map1, {1 => 1, 2 => 2})
+      assert_not_equal(map1, {:a => 1, :b => 2})
+      assert_not_equal(map1, {1 => {1 => 1}, 2 => {2 => 2}})
+      assert_not_equal(map1, {:a => {:a => 1}, :b => {:a => 2}})
     end
   end
 end
