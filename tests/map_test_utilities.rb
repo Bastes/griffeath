@@ -5,7 +5,6 @@ module Griffeath
       range ||= (-5..5)
       @square ||= Hash.new
       @square[range] ||= range.to_a.collect { |i| range.to_a }
-      @square[range]
     end
   
     # circles through a square set of points
@@ -19,9 +18,9 @@ module Griffeath
     end
     
     # fills a new map with a square set of test values
-    def filled_map
+    def filled_map(range = nil)
       map = Map.new
-      points { |x, y| map[x, y] = anything(x, y) }
+      points(range) { |x, y| map[x, y] = anything(x, y) }
       map
     end
     
