@@ -16,11 +16,15 @@ module Griffeath
         states = (0..(rule['states'] - 1)).to_a
         rule['situations'].each_pair do |situation_name, situation|
           situation.each_pair do |exemple_name, exemple|
-            map = Griffeath.new(states, exemple[0])
+            map = Griffeath.new(states, exemple.shift)
+            exemple.each do |e|
+              map.evolution!
+              assert_equal map, e
+            end
           end
         end
       end
-      flunk "Finish writing this test."
+      #flunk "Finish writing this test."
     end
   end
 end
