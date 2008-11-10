@@ -1,17 +1,10 @@
 module Griffeath
   module MapTestUtilities
-    # creates a set of points
-    def square(range = nil)
-      range ||= (-5..5)
-      @square ||= Hash.new
-      @square[range] ||= range.to_a.collect { |i| range.to_a }
-    end
-  
     # circles through a square set of points
     def points(range = nil, &block)
-      s = square(range)
-      s.each_index do |x|
-        s[x].each do |y|
+      range ||= (-5..5)
+      range.each do |y|
+        range.each do |x|
           yield x, y 
         end
       end
@@ -23,7 +16,14 @@ module Griffeath
       points(range) { |x, y| map[x, y] = anything(x, y) }
       map
     end
-
+    
+    # fills a sequence with ordered values in a map
+    def sequence(map, range = nil)
+      s = []
+      points(range) { |x, y| s << [x, y, map[x, y]] }
+      s
+    end
+ 
     # fills an array with test values
     def filled_array
       @array ||= Array.new(10) { |y| Array.new(10) { |x| anything(x, y) } }

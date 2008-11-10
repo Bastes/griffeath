@@ -34,20 +34,21 @@ module Griffeath
     # iterating through all non-empty cells
     def test_each
       map = filled_map
-      flunk 'Needs more cases.'
+      s = sequence(map)
+      map.each do |v, x, y|
+        assert_not_nil s.delete([x, y, v]), "Position (#{x}, #{y}) shouldn't be iterated and should be nil ('#{v}' found)."
+      end
+      assert_block "Should have iterated through #{s.length} more element(s) : #{s.collect { |e| "\n- (#{e[0]}, #{e[1]}) => '#{e[2]}'" }}" do
+        s.empty?
+      end
     end
 
     # iterating through a specific zone
     def test_zone
       map = filled_map
-      sequence = []
-      (-6..6).each do |y|
-        (-6..6).each do |x| 
-          sequence << [x, y, map[x, y]]
-        end
-      end
+      s = sequence(map, -6..6)
       map.zone(-6, 6, 6, -6) do |v, x, y|
-        sx, sy, sv = sequence.shift
+        sx, sy, sv = s.shift
         assert_equal x, sx
         assert_equal y, sy
         assert_equal v, sv
@@ -57,24 +58,19 @@ module Griffeath
     # iterating around a specific spot
     def test_around
       map = filled_map
-      sequence = []
-      (-1..1).each do |y|
-        (-1..1).each do |x| 
-          sequence << [x, y, map[x, y]]
-        end
-      end
+      s = sequence(map, -1..1)
       [true, false].each do |including|
-        seq = sequence.clone
+        seq = s.clone
         map.around(0, 0, including) do |v, x, y|
           sx, sy, sv = seq.shift
           assert_equal x, sx
           assert_equal y, sy
           assert_equal v, sv
         end
-        sequence.delete_at 4 if including
+        s.delete_at 4 if including
       end
       map.around(0, 0) do |v, x, y|
-        sx, sy, sv = sequence.shift
+        sx, sy, sv = s.shift
         assert_equal x, sx
         assert_equal y, sy
         assert_equal v, sv
@@ -98,10 +94,12 @@ module Griffeath
       # both maps are equal
       map2 = filled_map
       assert_equal map1, map2
+      assert_equal map1.eql?(map2), true
       
       # unless they differ even in the slightest way
       map2[0, 0] = nil
       assert_not_equal map1, map2
+      assert_not_equal map1.eql?(map2), true
       
       # comparing with an equivalent array
       map1 = Map.new(array = filled_array)
