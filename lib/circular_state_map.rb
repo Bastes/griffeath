@@ -10,6 +10,7 @@ module Griffeath # :nodoc:
 
     # creating a new state map
     # states:: list of states a cell can take (first state is default state)
+    # values:: see Griffeath::Map#new
     def initialize(states, values = [])
       @states = CircularStateArray.new(states)
       @states.freeze
