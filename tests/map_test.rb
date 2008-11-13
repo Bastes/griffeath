@@ -81,8 +81,9 @@ module Griffeath
     # - another map
     # - an array of arrays
     # - a hash of hashes (with integer coordinates)
-    # as long as the filled area of the map corresponds to the comparison pattern
-    # both should be considered equal, disregarding the position of the pattern
+    # as long as the filled area of the map corresponds to the comparison
+    # pattern, both should be considered equal, disregarding the position of the
+    # pattern
     def test_comparison
       map1 = filled_map
       

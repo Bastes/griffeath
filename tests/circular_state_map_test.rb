@@ -13,7 +13,8 @@ module Griffeath
       assert_raise(NoMethodError) { map.states = :truc }
     end
   
-    # an empty map should only contain the default state (first in the state array)
+    # an empty map should only contain the default state
+    # (first in the state array)
     def test_empty_state
       map = CircularStateMap.new [:empty, :full]
       points do |x, y|
@@ -47,6 +48,17 @@ module Griffeath
           assert_equal state, map[x, y]
         end
       end
+    end
+    
+    # comparing values with different sets of states should return false
+    def test_comparison
+      #flunk 'Test with values off the state list.'
+      map = CircularStateMap.new [0, 1, 2]
+      assert_equal map, [[0, 0, 0]]
+      assert_not_equal map, [[:lorem, :ipsum, :dolor]]
+      assert_not_equal map, [['fithos', 'lusec', 'vitos']]
+      assert_not_equal map, [[5, 7, 9]]
+
     end
   end
 end
