@@ -42,6 +42,17 @@ module Griffeath # :nodoc:
     def evolve!(x, y)
       self[x, y] = evolve(x, y)
     end
+
+    # see Map#==
+    # specializes the behaviour to refuse out-of-states values
+    def ==(value)
+      return true if self.eql? value
+      begin
+        return self.eql?(self.class.new(self.states, value))
+      rescue
+        return false
+      end
+    end
   end
 end
 

@@ -93,7 +93,7 @@ module Griffeath # :nodoc:
     def ==(value)
       return true if self.eql? value
       begin
-        return self.eql?(Map.new(value))
+        return self.eql?(self.class.new(value))
       rescue
         return false
       end
