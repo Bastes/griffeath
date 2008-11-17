@@ -109,9 +109,35 @@ module Griffeath # :nodoc:
       end
       return tag_cells.empty?
     end
+    
+    def to_s # :nodoc:
+      xmin, ymin, xmax, ymax = pattern_bounds
+      result = "(#{xmin}, #{ymin}) - (#{xmax}, #{ymax})\n"
+      line = ymin
+      z = {}
+      zone(xmin, ymin, xmax, ymax) do |content, x, y|
+        z[y] ||= {}
+        z[y][x] = content
+      end
+      result += '[[' + z.values.collect { |v| v.values.join(', ') }.join("],\n [") + ']]'
+    end
 
     private
     
+    def pattern_bounds # :nodoc:
+      return 0, 0, 0, 0 if @cells.empty?
+      cx = []
+      cy = []
+      @cells.keys.each do |v|
+        x, y = coordinates(v)
+        cx << x
+        cy << y
+      end
+      cx.sort!
+      cy.sort!
+      return [cx.first, cy.first, cx.last, cy.last]
+    end
+
     def position(x, y) # :nodoc:
       "#{x}_#{y}".to_sym
     end

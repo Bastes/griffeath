@@ -3,7 +3,7 @@ require 'yaml'
 require 'lib/griffeath'
 
 module Griffeath
-  class CircularStateArrayTest < Test::Unit::TestCase
+  class GriffeathTest < Test::Unit::TestCase
     # a new map should have 4 states by default
     def test_default_states
       assert_equal Griffeath.new.states, [ 0, 1, 2, 3 ]
