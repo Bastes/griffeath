@@ -22,15 +22,12 @@ module Griffeath
       end
     end
     
-    # an element out of state should be kept at the default state
+    # an element out of state should not be allowed to pollute the map
     def test_out_of_states_elements
       map = CircularStateMap.new [:empty, :full]
       points do |x, y|
-        map[x, y] = something = anything(x, y)
-        someotherthing = map[x, y]
-        [someotherthing, map[x, y]].each do |state|
-          assert_not_equal state, something 
-          assert_equal     state, :empty
+        assert_raise ArgumentError do
+          map[x, y] = anything(x, y)
         end
       end
     end
@@ -52,13 +49,11 @@ module Griffeath
     
     # comparing values with different sets of states should return false
     def test_comparison
-      #flunk 'Test with values off the state list.'
       map = CircularStateMap.new [0, 1, 2]
       assert_equal map, [[0, 0, 0]]
       assert_not_equal map, [[:lorem, :ipsum, :dolor]]
       assert_not_equal map, [['fithos', 'lusec', 'vitos']]
       assert_not_equal map, [[5, 7, 9]]
-
     end
   end
 end

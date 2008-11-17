@@ -25,10 +25,11 @@ module Griffeath # :nodoc:
    
     # see Map::[]=
     # see CircularStateArray::state
-    def []=(x, y, content)
+    # lenient:: set to true to avoid raising an argument error when the value is not a proper state
+    def []=(x, y, content, lenient = false)
+      raise ArgumentError.new("Unexpected value (#{content} for this map (allowed : #{@states.join(', ')})") unless lenient or @states.include?(content)
       content = @states.state(content) 
       super(x, y, content == @states.default ? nil : content)
-      content
     end
     
     # returns the next state of given position's cell
