@@ -54,6 +54,10 @@ module Griffeath # :nodoc:
         return false
       end
     end
+
+    def inspect # :nodoc:
+      super.gsub(/\(\(/, "@states : #{@states.join(', ')}\n  ((")
+    end
   end
 end
 
