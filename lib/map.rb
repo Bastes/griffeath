@@ -110,16 +110,17 @@ module Griffeath # :nodoc:
       return tag_cells.empty?
     end
     
-    def to_s # :nodoc:
+    def inspect # :nodoc:
       xmin, ymin, xmax, ymax = pattern_bounds
-      result = "(#{xmin}, #{ymin}) - (#{xmax}, #{ymax})\n"
+      result = "#<#{self.class}:#{__id__}\n" +
+               "  ((#{xmin}, #{ymin}) - (#{xmax}, #{ymax}))\n"
       line = ymin
       z = {}
       zone(xmin, ymin, xmax, ymax) do |content, x, y|
         z[y] ||= {}
         z[y][x] = content
       end
-      result += '[[' + z.values.collect { |v| v.values.join(', ') }.join("],\n [") + ']]'
+      result += '  [[' + z.values.collect { |v| v.values.join(', ') }.join("],\n   [") + ']]>'
     end
 
     private
