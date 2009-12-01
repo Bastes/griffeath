@@ -1,5 +1,5 @@
-require 'lib/map'
-require 'lib/circular_state_array'
+require 'griffeath/map'
+require 'griffeath/circular_state_array'
 
 =begin rdoc
 =State map specialized for handling a circular list of state.

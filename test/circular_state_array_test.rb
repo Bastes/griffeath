@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'lib/circular_state_array'
+require 'griffeath/circular_state_array'
 
 module Griffeath
   class CircularStateArrayTest < Test::Unit::TestCase

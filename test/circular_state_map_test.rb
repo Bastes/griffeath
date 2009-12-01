@@ -1,6 +1,6 @@
 require 'test/unit'
-require 'tests/map_test_utilities'
-require 'lib/circular_state_map'
+require 'test/map_test_utilities'
+require 'griffeath/circular_state_map'
 
 module Griffeath
   class CircularStateMapTest < Test::Unit::TestCase

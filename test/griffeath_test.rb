@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'yaml'
-require 'lib/griffeath'
+require 'griffeath/griffeath'
 
 module Griffeath
   class GriffeathTest < Test::Unit::TestCase
@@ -11,7 +11,7 @@ module Griffeath
     
     # the map evolving should follow griffeath's rules
     def test_evolution
-      tests = YAML::load(File.open('tests/fixtures/griffeath_fixtures.yaml'))
+      tests = YAML::load(File.open('test/fixtures/griffeath_fixtures.yaml'))
       tests.each_pair do |rule_name, rule|
         states = (0..(rule['states'] - 1)).to_a
         rule['situations'].each_pair do |situation_name, situation|
